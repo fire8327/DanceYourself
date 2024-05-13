@@ -4,7 +4,7 @@
 
 @layer base {
     #__nuxt{
-        @apply flex flex-col min-h-screen bg-white text-[#292929] text-xl font-Roboto
+        @apply flex flex-col min-h-screen bg-white text-[#131313] text-xl font-Roboto
     }
         
     :root{
@@ -62,5 +62,4 @@
     );
     background-size: 200%;
     -webkit-text-fill-color: transparent;
-    white-space: nowrap;
 }
