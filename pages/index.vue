@@ -57,6 +57,7 @@
         </div>
     </div>
     <FAQ></FAQ>
+    <Gallery></Gallery>
     <Feedback></Feedback>
 </template>
 
