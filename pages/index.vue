@@ -7,6 +7,35 @@
         </div>
         <img src="/images/hero/bg.jpg" alt="" class="lg:w-1/2 rounded-xl">
     </div>
+    <div class="flex flex-col gap-6">
+        <div class="flex items-center gap-4 text-3xl font-Pacifico">
+            <Icon class="text-3xl text-[#673ab7]/70" name="material-symbols:control-point-duplicate-rounded"/>
+            <p>Преимущества</p>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="flex flex-col rounded-xl border border-[#673ab7]/70 gap-4 p-4">
+                <div class="flex items-center gap-4">
+                    <p class="text-xl tracking-wider">Разнообразие стилей</p>
+                    <Icon class="text-2xl" name="material-symbols:diversity-2"/>
+                </div>
+                <p class="text-lg opacity-70">От сальсы до хип-хопа, от бальных танцев до современных танцевальных трендов, у нас есть что-то для каждого!</p>
+            </div>
+            <div class="flex flex-col rounded-xl border border-[#673ab7]/70 gap-4 p-4">
+                <div class="flex items-center gap-4">
+                    <p class="text-xl tracking-wider">Профессиональные инструкторы</p>
+                    <Icon class="text-2xl" name="mdi:dance-ballroom"/>
+                </div>
+                <p class="text-lg opacity-70">Наши инструкторы - это настоящие профессионалы своего дела, готовые поделиться своими знаниями и опытом с вами.</p>
+            </div>
+            <div class="flex flex-col rounded-xl border border-[#673ab7]/70 gap-4 p-4">
+                <div class="flex items-center gap-4">
+                    <p class="text-xl tracking-wider">Подходит для всех</p>
+                    <Icon class="text-2xl" name="icon-park-outline:every-user"/>
+                </div>
+                <p class="text-lg opacity-70">Независимо от вашего возраста, физической подготовки или опыта в танцах, у нас есть уроки, которые подходят именно вам.</p>
+            </div>
+        </div>
+    </div>
     <JoinDance></JoinDance>
     <div class="flex flex-col gap-6">
         <div class="flex max-md:flex-col md:items-center md:justify-between gap-4">
