@@ -31,7 +31,7 @@
 
 
     /* создание сообщений */
-    const { messageTitle, messageType } = storeToRefs(useMessagesStore())
+    const showMessage = useMessagesStore().showMessage
 
 
     /* отправка данных */
@@ -59,8 +59,8 @@
             method:'post'
         })
 
-        if (error.value) return messageTitle.value = 'При отправке произошла ошибка!', messageType.value = false
-        messageTitle.value = 'Успешная отправка!', messageType.value = true 
+        if (error.value) return showMessage("При отправке произошла ошибка!", false)
+        showMessage("Успешная отправка!", true)
         feedbackForm.value.name = ""
         feedbackForm.value.email = ""
         feedbackForm.value.phone = ""

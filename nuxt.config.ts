@@ -6,12 +6,21 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
     "nuxt-icon",
     "@pinia/nuxt",
-    "@formkit/nuxt"
+    "@formkit/nuxt",
+    "@nuxtjs/supabase"
   ],
   googleFonts: {
     families: {
       'Roboto': true,
       'Pacifico': true
+    }
+  },
+  supabase: {
+    redirect: false
+  },
+  postcss: {
+    plugins: {
+      cssnano: false 
     }
   }
 })

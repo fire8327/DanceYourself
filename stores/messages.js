@@ -2,5 +2,13 @@ export const useMessagesStore = defineStore("messages", () => {
     const messageTitle = useCookie('messageTitle')
     const messageType = useCookie('messageType')
 
-    return {messageTitle, messageType}
+    const showMessage = (message, isSuccess) => {
+        messageTitle.value = message
+        messageType.value = isSuccess
+        setTimeout(() => {
+            messageTitle.value = null
+        }, 3000)
+    }
+
+    return {messageTitle, messageType, showMessage}
 })
