@@ -9,25 +9,25 @@
     </div>
     <div class="flex flex-col gap-6">
         <div class="flex items-center gap-4 text-3xl font-Pacifico">
-            <Icon class="text-3xl text-[#673ab7]/70" name="material-symbols:control-point-duplicate-rounded"/>
+            <Icon class="text-3xl text-[#f48fb1]/70" name="material-symbols:control-point-duplicate-rounded"/>
             <p>Преимущества</p>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="flex flex-col rounded-xl border border-[#673ab7]/70 gap-4 p-4">
+            <div class="flex flex-col rounded-xl border border-[#f48fb1]/70 gap-4 p-4">
                 <div class="flex items-center gap-4">
                     <p class="text-xl tracking-wider">Разнообразие стилей</p>
                     <Icon class="text-2xl" name="material-symbols:diversity-2"/>
                 </div>
                 <p class="text-lg opacity-70">От сальсы до хип-хопа, от бальных танцев до современных танцевальных трендов, у нас есть что-то для каждого!</p>
             </div>
-            <div class="flex flex-col rounded-xl border border-[#673ab7]/70 gap-4 p-4">
+            <div class="flex flex-col rounded-xl border border-[#f48fb1]/70 gap-4 p-4">
                 <div class="flex items-center gap-4">
                     <p class="text-xl tracking-wider">Профессиональные инструкторы</p>
                     <Icon class="text-2xl" name="mdi:dance-ballroom"/>
                 </div>
                 <p class="text-lg opacity-70">Наши инструкторы - это настоящие профессионалы своего дела, готовые поделиться своими знаниями и опытом с вами.</p>
             </div>
-            <div class="flex flex-col rounded-xl border border-[#673ab7]/70 gap-4 p-4">
+            <div class="flex flex-col rounded-xl border border-[#f48fb1]/70 gap-4 p-4">
                 <div class="flex items-center gap-4">
                     <p class="text-xl tracking-wider">Подходит для всех</p>
                     <Icon class="text-2xl" name="icon-park-outline:every-user"/>
@@ -40,7 +40,7 @@
     <div class="flex flex-col gap-6">
         <div class="flex max-md:flex-col md:items-center md:justify-between gap-4">
             <div class="flex items-center gap-4 text-3xl font-Pacifico">
-                <Icon class="text-3xl text-[#673ab7]/70" name="ph:chalkboard-teacher"/>
+                <Icon class="text-3xl text-[#f48fb1]/70" name="ph:chalkboard-teacher"/>
                 <p>Преподаватели</p>
             </div>
             <CustomLink :title="'Подробнее'" :link="'/'"></CustomLink>

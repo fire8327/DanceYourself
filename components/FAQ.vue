@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col gap-6">
         <div class="flex items-center gap-4 text-3xl font-Pacifico">
-            <Icon class="text-3xl text-[#673ab7]/70" name="material-symbols:help-rounded"/>
+            <Icon class="text-3xl text-[#f48fb1]/70" name="material-symbols:help-rounded"/>
             <p>Часто задаваемые вопросы</p>
         </div>
         <Question v-for="FAQ in FAQs" v-bind="FAQ"></Question>
