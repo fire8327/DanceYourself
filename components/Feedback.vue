@@ -20,7 +20,7 @@
                 <FormKit type="text" v-model="feedbackForm.email" name="Почта" validation="required|email" messages-class="text-[#E9556D] font-Pacifico" input-class="w-full rounded-xl bg-transparent focus:outline-none border border-[#673ab7]/70 py-2 px-4" placeholder="Ваша почта"></FormKit>
                 <FormKit type="text" v-model="feedbackForm.phone" name="Номер телефона" validation="required|length:11" messages-class="text-[#E9556D] font-Pacifico" input-class="w-full rounded-xl bg-transparent focus:outline-none border border-[#673ab7]/70 py-2 px-4" placeholder="Ваш номер телефона"></FormKit>
             </div>
-            <button type="submit" class="py-0.5 mx-auto px-4 rounded-full bg-[#673ab7]/70 border border-[#673ab7]/70 text-white transition-all duration-500 hover:text-[#673ab7]/70 hover:bg-transparent w-fit">Отправить</button>
+            <button type="submit" class="py-0.5 mx-auto px-4 rounded-full bg-[#673ab7]/70 text-white w-fit animate-pulse">Отправить</button>
         </FormKit>
     </div>
 </template>
@@ -35,8 +35,8 @@
 
 
     /* отправка данных */
-    const token = "7089593722:AAFSLZxkxkq0GVp0yjUoYO0I1EKPEBZZROU"
-    const chatId = "-4233107265"
+    /* const token = "7089593722:AAFSLZxkxkq0GVp0yjUoYO0I1EKPEBZZROU"
+    const chatId = "-4233107265" */
     const URL = `https://api.telegram.org/bot${token}/sendMessage`
 
     const feedbackForm = ref({
