@@ -6,11 +6,11 @@
             </NuxtLink>
             <nav class="flex items-center gap-6 p-2 lg:px-6 rounded-2xl lg:rounded-full bg-gray-100 max-lg:absolute max-lg:left-0 max-lg:bg-white max-lg:py-6 max-lg:flex-col max-lg:w-full z-[4] duration-500 transition-all":class="isMenuShow ? 'max-lg:top-[calc(100%+20px)]' : 'max-lg:top-0 max-lg:-translate-y-full'">
                 <NuxtLink to="/" class="flex flex-col after:w-0 after:h-px after:bg-[#292929] after:transition-all after:duration-500 hover:after:w-full">Главная</NuxtLink>
-                <NuxtLink class="flex flex-col after:w-0 after:h-px after:bg-[#292929] after:transition-all after:duration-500 hover:after:w-full">Преподаватели</NuxtLink>
+                <NuxtLink to="/teachers" class="flex flex-col after:w-0 after:h-px after:bg-[#292929] after:transition-all after:duration-500 hover:after:w-full">Преподаватели</NuxtLink>
                 <NuxtLink to="/about" class="flex flex-col after:w-0 after:h-px after:bg-[#292929] after:transition-all after:duration-500 hover:after:w-full">О нас</NuxtLink>
                 <NuxtLink to="/contacts" class="flex flex-col after:w-0 after:h-px after:bg-[#292929] after:transition-all after:duration-500 hover:after:w-full">Контакты</NuxtLink>
                 <div class="flex items-center gap-4">
-                    <NuxtLink>
+                    <NuxtLink to="/cart" v-if="authenticated">
                         <Icon class="text-3xl text-[#673ab7]/70" name="material-symbols:shopping-cart-rounded"/>
                     </NuxtLink>
                     <NuxtLink :to="authenticated ? '/profile' : '/auth'">

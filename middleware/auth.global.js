@@ -11,7 +11,7 @@ export default defineNuxtRouteMiddleware((to) => {
         return navigateTo('/profile')
     }
 
-    if (!authenticated.value && to?.path === '/profile') {
+    if (!authenticated.value && (to?.path === '/profile' || to?.path === '/cart')) {
         return navigateTo('/auth')
     }
 
