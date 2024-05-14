@@ -11,6 +11,8 @@
             <FormKit type="password" v-model="user.password" validation="required|length:6" messages-class="text-[#E9556D] font-Pacifico" name="Пароль" outer-class="w-full lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="••••••"/>
         </div>
         <FormKit type="select" :options="['Ученик', 'Педагог']" v-model="user.role" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Роль" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Роль"/>
+        <FormKit v-if="user.role == 'Педагог'" type="text" v-model="user.nickname" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Никнейм" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Никнейм"/>
+        <FormKit v-if="user.role == 'Педагог'" type="textarea" v-model="user.desc" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Описание" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Расскажите о себе"/>
         <button type="submit" class="w-[160px] text-center py-0.5 px-4 rounded-full bg-[#673ab7]/70 border border-[#673ab7]/70 text-white transition-all duration-500 hover:text-[#673ab7]/70 hover:bg-transparent">Регистрация</button>
         <div class="flex items-center justify-center gap-4 w-full md:w-2/3 lg:w-1/2 my-10">
             <div class="w-1/3 h-px bg-[#673ab7]/70"></div>  
@@ -29,7 +31,9 @@
         patronymic: "",
         login: "",
         password: "",
-        role: ""  
+        role: "",
+        desc: "",
+        nickname: ""  
     })
 
 
@@ -57,7 +61,16 @@
         const { data, error } = await supabase
         .from('users')
         .insert([
-            { name: user.value.name, surname: user.value.surname, patronymic: user.value.patronymic, login: user.value.login, password: user.value.password, role: user.value.role },
+            { 
+                name: user.value.name,
+                surname: user.value.surname,
+                patronymic: user.value.patronymic, 
+                login: user.value.login, 
+                password: user.value.password, 
+                role: user.value.role,
+                desc: user.value.desc,
+                nickname: user.value.nickname
+            },
         ])
         .select()
 
