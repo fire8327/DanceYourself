@@ -19,13 +19,13 @@
             <span>ул. Пушкина, д. Колотшукина</span>
         </div>
         <div class="flex items-center gap-4">
-            <NuxtLink class="transition-all duration-500 hover:text-[#673ab7]/70">
+            <NuxtLink target="_blank" class="transition-all duration-500 hover:text-[#673ab7]/70">
                 <Icon class="text-3xl" name="mdi:vk"/>
             </NuxtLink>
-            <NuxtLink class="transition-all duration-500 hover:text-[#673ab7]/70">
+            <NuxtLink target="_blank" class="transition-all duration-500 hover:text-[#673ab7]/70">
                 <Icon class="text-3xl" name="ic:baseline-telegram"/>
             </NuxtLink>
-            <NuxtLink class="transition-all duration-500 hover:text-[#673ab7]/70">
+            <NuxtLink target="_blank" class="transition-all duration-500 hover:text-[#673ab7]/70">
                 <Icon class="text-3xl" name="mdi:instagram"/>
             </NuxtLink>
         </div>
