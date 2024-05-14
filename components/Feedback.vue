@@ -35,8 +35,8 @@
 
 
     /* отправка данных */
-    const token = ""
-    const chatId = ""
+    const token = "7152747588:AAG3NWVvoF_XcTxiDfxDpwnHO0BmqCFi_4A"
+    const chatId = "-4142115741"
     const URL = `https://api.telegram.org/bot${token}/sendMessage`
 
     const feedbackForm = ref({
