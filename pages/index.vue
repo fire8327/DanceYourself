@@ -57,6 +57,7 @@
         </div>
     </div>
     <FAQ></FAQ>
+    <Feedback></Feedback>
 </template>
 
 <script setup>
