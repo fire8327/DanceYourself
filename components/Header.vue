@@ -14,8 +14,7 @@
                         <Icon class="text-3xl text-[#673ab7]/70" name="material-symbols:shopping-cart-rounded"/>
                     </NuxtLink>
                     <NuxtLink :to="authenticated ? '/profile' : '/auth'">
-                        <img v-if="authenticated" :src="`https://mnezrmcgjoxgghkosfmz.supabase.co/storage/v1/object/public/users/${users[0].avatar}`" alt="" class="w-10 h-10 rounded-full object-cover">
-                        <Icon v-else class="text-3xl text-[#673ab7]/70" name="material-symbols:person"/>
+                        <Icon class="text-3xl text-[#673ab7]/70" name="material-symbols:person"/>
                     </NuxtLink>
                 </div>
             </nav>
@@ -48,13 +47,5 @@
 
 
     /* проверка входа */
-    const { authenticated, role, id } = storeToRefs(useUserStore())
-
-
-    /* смена изображения */
-    const supabase = useSupabaseClient() 
-    const { data:users, error } = await supabase
-    .from('users')
-    .select('*')   
-    .eq('id', id.value)  
+    const { authenticated, role } = storeToRefs(useUserStore())
 </script>

@@ -13,10 +13,16 @@
             <div class="flex items-center lg:items-start gap-4 max-lg:flex-col md:w-2/3 lg:w-1/2">
                 <FormKit type="text" v-model="user.login" validation="required" messages-class="text-[#E9556D] font-Comfortaa" name="Логин" outer-class="w-full lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Логин"/>
                 <FormKit type="text" v-model="user.password" validation="required|length:6" messages-class="text-[#E9556D] font-Comfortaa" name="Пароль" outer-class="w-full lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="••••••"/>
-            </div>     
-            <FormKit @change="loadImage" type="file" messages-class="text-[#E9556D] font-Pacifico" name="Аватар" outer-class="w-full md:w-2/3 lg:w-1/2" accept=".png,.jpg,.jpeg,.svg,.webp,.bmp" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Аватар"/>
+            </div>   
             <FormKit v-if="user.role == 'Педагог'" type="text" v-model="user.nickname" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Никнейм" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Никнейм"/>
             <FormKit v-if="user.role == 'Педагог'" type="textarea" v-model="user.desc" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Описание" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Расскажите о себе"/>
+            <div class="relative rounded-xl border border-[#673ab7]/70 overflow-hidden w-full md:w-2/3 lg:w-1/2 group">
+                <img :src="`https://mnezrmcgjoxgghkosfmz.supabase.co/storage/v1/object/public/users/${users[0].avatar}`" alt="" class="w-full transition-all duration-500 group-hover:scale-125">
+                <label class="cursor-pointer absolute inset-0 bg-black/30 opacity-0 transition-all duration-500 group-hover:opacity-100 flex items-center justify-center">
+                    <Icon class="text-3xl text-white" name="material-symbols:edit-rounded"/>
+                    <FormKit @change="loadImage" type="file" accept=".png,.jpg,.jpeg,.svg,.webp,.bmp" outer-class="hidden"/>
+                </label>
+            </div>  
             <button type="submit" class="w-[160px] text-center py-0.5 px-4 rounded-full bg-[#673ab7]/70 border border-[#673ab7]/70 text-white transition-all duration-500 hover:text-[#673ab7]/70 hover:bg-transparent">Изменить</button>
         </FormKit>
     </div>
@@ -53,6 +59,7 @@
         login: users[0].login,
         role: users[0].role,
         desc: users[0].desc,
+        nickname: users[0].nickname,
         avatar: users[0].avatar,
         password: users[0].password
     }) 
