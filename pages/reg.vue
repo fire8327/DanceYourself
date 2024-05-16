@@ -79,7 +79,7 @@
                 login: user.value.login, 
                 password: user.value.password, 
                 role: user.value.role,
-                desc: user.value.desc,
+                desc: user.value.desc.replace(/(?:\r\n|\r|\n)/g, '<br>'),
                 nickname: user.value.nickname,
                 avatar: `avatars/${files[0].name}`
             },

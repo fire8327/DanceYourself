@@ -58,7 +58,7 @@
         patronymic: users[0].patronymic,
         login: users[0].login,
         role: users[0].role,
-        desc: users[0].desc,
+        desc: users[0].desc.replace('<br>', '\n'),
         nickname: users[0].nickname,
         avatar: users[0].avatar,
         password: users[0].password
@@ -84,7 +84,7 @@
         }
 
         if(role.value == 'Педагог') {
-            updateData.desc = user.value.desc
+            updateData.desc = user.value.desc.replace(/(?:\r\n|\r|\n)/g, '<br>')
             updateData.nickname = user.value.nickname
         }
 
@@ -102,14 +102,13 @@
         .from('users')
         .update(updateData)
         .eq('id', id.value)
-
-        router.go()
            
         if(error) {
             console.log(error)
             showMessage("Произошла ошибка!", false)   
         } else {            
             showMessage("Данные обновлены!", true)   
+            router.go()
         }
     }
 
