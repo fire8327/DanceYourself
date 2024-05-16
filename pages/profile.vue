@@ -95,6 +95,8 @@
         .from('users')
         .update(updateData)
         .eq('id', id.value)
+
+        router.go()
            
         if(error) {
             console.log(error)
