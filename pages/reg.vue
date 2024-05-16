@@ -67,7 +67,7 @@
             return showMessage("Такой  логин уже используется!", false)              
         } 
 
-        const { data:image, error:imageError } = await supabase.storage.from('users').upload(files[0].name, files[0])
+        await supabase.storage.from('users').upload(`avatars/${files[0].name}`, files[0])
 
         const { data, error } = await supabase
         .from('users')
@@ -81,7 +81,7 @@
                 role: user.value.role,
                 desc: user.value.desc,
                 nickname: user.value.nickname,
-                avatar: files[0].name
+                avatar: `avatars/${files[0].name}`
             },
         ])
         .select()

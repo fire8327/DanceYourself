@@ -13,7 +13,10 @@
             <div class="flex items-center lg:items-start gap-4 max-lg:flex-col md:w-2/3 lg:w-1/2">
                 <FormKit type="text" v-model="user.login" validation="required" messages-class="text-[#E9556D] font-Comfortaa" name="Логин" outer-class="w-full lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Логин"/>
                 <FormKit type="text" v-model="user.password" validation="required|length:6" messages-class="text-[#E9556D] font-Comfortaa" name="Пароль" outer-class="w-full lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="••••••"/>
-            </div>            
+            </div>     
+            <FormKit @change="loadImage" type="file" messages-class="text-[#E9556D] font-Pacifico" name="Аватар" outer-class="w-full md:w-2/3 lg:w-1/2" accept=".png,.jpg,.jpeg,.svg,.webp,.bmp" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Аватар"/>
+            <FormKit v-if="user.role == 'Педагог'" type="text" v-model="user.nickname" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Никнейм" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Никнейм"/>
+            <FormKit v-if="user.role == 'Педагог'" type="textarea" v-model="user.desc" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Описание" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Расскажите о себе"/>
             <button type="submit" class="w-[160px] text-center py-0.5 px-4 rounded-full bg-[#673ab7]/70 border border-[#673ab7]/70 text-white transition-all duration-500 hover:text-[#673ab7]/70 hover:bg-transparent">Изменить</button>
         </FormKit>
     </div>
@@ -48,17 +51,51 @@
         surname: users[0].surname,
         patronymic: users[0].patronymic,
         login: users[0].login,
+        role: users[0].role,
+        desc: users[0].desc,
+        avatar: users[0].avatar,
         password: users[0].password
     }) 
 
 
+    /* добавление фото */
+    let files = []
+    const loadImage = (el) => {
+        files = el.target.files
+        console.log(files)
+    }  
+
+
     /* обновление данных */
-    const updateUser = async () => {        
+    const updateUser = async () => {    
+        let updateData = {
+            name: user.value.name, 
+            surname: user.value.surname, 
+            patronymic: user.value.patronymic, 
+            login: user.value.login, 
+            password: user.value.password
+        }
+
+        if(role.value == 'Педагог') {
+            updateData.desc = user.value.desc
+            updateData.nickname = user.value.nickname
+        }
+
+        if(files.length > 0) {
+            await supabase.storage.from('users').upload(`avatars/${files[0].name}`, files[0])           
+            updateData.avatar = `avatars/${files[0].name}`
+        }
+
+
+        if (files.length > 0 && user.value.avatar) {
+            const { data, error } = await supabase.storage.from('users').remove([user.value.avatar])
+        }
+
         const { data, error } = await supabase
         .from('users')
-        .update({ name: user.value.name, surname: user.value.surname, patronymic: user.value.patronymic, login: user.value.login, password: user.value.password})
+        .update(updateData)
         .eq('id', id.value)
-          
+           
         if(error) {
             console.log(error)
             showMessage("Произошла ошибка!", false)   
