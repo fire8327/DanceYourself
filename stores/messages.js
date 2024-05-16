@@ -7,7 +7,7 @@ export const useMessagesStore = defineStore("messages", () => {
         messageType.value = isSuccess
         setTimeout(() => {
             messageTitle.value = null
-        }, 3000)
+        }, 1500)
     }
 
     return {messageTitle, messageType, showMessage}
