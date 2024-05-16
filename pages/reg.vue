@@ -10,6 +10,7 @@
             <FormKit type="text" v-model="user.login" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Логин" outer-class="w-full lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Логин"/>
             <FormKit type="password" v-model="user.password" validation="required|length:6" messages-class="text-[#E9556D] font-Pacifico" name="Пароль" outer-class="w-full lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="••••••"/>
         </div>
+        <FormKit @change="loadImage" type="file" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Аватар" outer-class="w-full md:w-2/3 lg:w-1/2" accept=".png,.jpg,.jpeg,.svg,.webp,.bmp" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Аватар"/>
         <FormKit type="select" :options="['Ученик', 'Педагог']" v-model="user.role" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Роль" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Роль"/>
         <FormKit v-if="user.role == 'Педагог'" type="text" v-model="user.nickname" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Никнейм" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Никнейм"/>
         <FormKit v-if="user.role == 'Педагог'" type="textarea" v-model="user.desc" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Описание" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Расскажите о себе"/>
@@ -46,6 +47,14 @@
     const router = useRouter()
 
 
+    /* добавление фото */
+    let files = []
+    const loadImage = (el) => {
+        files = el.target.files
+        console.log(files)
+    }  
+
+
     /* регистрация пользователя */
     const userReg = async () => {
         const { data: users, error: usersError } = await supabase
@@ -58,6 +67,8 @@
             return showMessage("Такой  логин уже используется!", false)              
         } 
 
+        const { data:image, error:imageError } = await supabase.storage.from('users').upload(files[0].name, files[0])
+
         const { data, error } = await supabase
         .from('users')
         .insert([
@@ -69,7 +80,8 @@
                 password: user.value.password, 
                 role: user.value.role,
                 desc: user.value.desc,
-                nickname: user.value.nickname
+                nickname: user.value.nickname,
+                avatar: files[0].name
             },
         ])
         .select()
@@ -82,4 +94,5 @@
             showMessage('Произошла ошибка!', false)
         }
     }
+
 </script>
