@@ -58,6 +58,7 @@
     </div>
     <FAQ></FAQ>
     <Gallery></Gallery>
+    <Reviews></Reviews>
     <Feedback></Feedback>
 </template>
 
