@@ -35,7 +35,6 @@
                 <p class="text-xl"><span class="font-Pacifico">Наименование</span> - {{ lesson.title }}</p>
                 <p class="text-lg"><span class="font-Pacifico">Описание</span> - {{ lesson.desc }}</p>
                 <p class="text-lg"><span class="font-Pacifico">Цена</span> - {{ lesson.price.toLocaleString() }}₽</p>
-                <video :src="`https://mnezrmcgjoxgghkosfmz.supabase.co/storage/v1/object/public/users/${lesson.video}`" class="rounded-xl w-full aspect-video border border-gray-200/80"></video>
                 <NuxtLink class="w-[160px] mx-auto text-center py-0.5 px-4 rounded-full bg-[#673ab7]/70 border border-[#673ab7]/70 text-white transition-all duration-500 hover:text-[#673ab7]/70 hover:bg-transparent">Подробнее</NuxtLink>
             </div>
         </div>
