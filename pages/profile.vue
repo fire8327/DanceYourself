@@ -72,7 +72,7 @@
                 <p class="text-xl"><span class="font-Pacifico">Наименование</span> - {{ lesson.title }}</p>
                 <p class="text-lg"><span class="font-Pacifico">Описание</span> - {{ lesson.desc }}</p>
                 <p class="text-lg"><span class="font-Pacifico">Цена</span> - {{ lesson.price.toLocaleString() }}₽</p>
-                <video :src="`https://mnezrmcgjoxgghkosfmz.supabase.co/storage/v1/object/public/users/${lesson.video}`" controls class="rounded-xl w-full aspect-video"></video>
+                <video :src="`https://mnezrmcgjoxgghkosfmz.supabase.co/storage/v1/object/public/users/${lesson.video}`" controls class="rounded-xl w-full aspect-video border border-gray-200/80"></video>
             </div>
         </div>
     </div>  
