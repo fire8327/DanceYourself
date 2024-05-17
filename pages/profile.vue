@@ -33,11 +33,11 @@
             <FormKit type="text" v-model="teacher.nickname" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Никнейм" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Никнейм"/>
             <FormKit type="textarea" v-model="teacher.desc" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Описание" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full h-[200px]" placeholder="Расскажите о себе"/>
             <div class="flex flex-col gap-4 w-full md:w-2/3 lg:w-1/2">
-                <div class="flex flex-col gap-2 rounded-xl border border-[#673ab7]/70 p-4 w-full" v-for="(characteristic, i) in teacher.styles">
+                <div class="flex items-center gap-2 w-full" v-for="(characteristic, i) in teacher.styles">
+                    <FormKit v-model="teacher.styles[i]" validation="required" outer-class="w-full" message-class="text-[#E9556D] font-Pacifico" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" :name="`Стиль ${i + 1}`" placeholder="Стиль танца" type="text"/>                    
                     <button @click="deleteCharacteristic(i)" type="button" class="px-4 py-2 rounded-xl text-white bg-[#673ab7]/70 w-fit self-end">
                         <Icon class="text-2xl" name="material-symbols:delete-forever"/>
                     </button>
-                    <FormKit v-model="teacher.styles[i]" validation="required" outer-class="w-full" message-class="text-[#E9556D] font-Pacifico" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" :name="`Стиль ${i + 1}`" placeholder="Стиль танца" type="text"/>                    
                 </div>
                 <button @click="addCharacteristic" type="button" class="px-4 py-2 rounded-xl text-white bg-[#673ab7]/70 mx-auto">
                     <Icon class="text-2xl" name="material-symbols:exposure-plus-1"/>
@@ -46,6 +46,36 @@
             <button type="submit" class="w-[160px] text-center py-0.5 px-4 rounded-full bg-[#673ab7]/70 border border-[#673ab7]/70 text-white transition-all duration-500 hover:text-[#673ab7]/70 hover:bg-transparent">Обновить</button>
         </FormKit>
     </div>
+    <div class="flex flex-col gap-6" v-if="user.role == 'Педагог'">
+        <div class="flex items-center gap-4 text-3xl font-Pacifico">
+            <Icon class="text-3xl text-[#f48fb1]/70" name="material-symbols:contacts-rounded"/>
+            <p>Добавление урока</p>
+        </div>
+        <FormKit @submit="addLesson" type="form" :actions="false" messages-class="hidden" form-class="flex flex-col gap-4 items-center justify-center">               
+            <FormKit type="text" v-model="lesson.title" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Название урока" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Название урока"/>
+            <FormKit type="textarea" v-model="lesson.desc" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Описание урока" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Описание урока"/>
+            <FormKit type="text" v-model="lesson.price" validation="required|number" messages-class="text-[#E9556D] font-Pacifico" name="Цена" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Цена"/>
+            <FormKit type="file" @change="loadLesson" accept="video/*" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Видео" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Видео"/>
+            <button type="submit" class="w-[160px] text-center py-0.5 px-4 rounded-full bg-[#673ab7]/70 border border-[#673ab7]/70 text-white transition-all duration-500 hover:text-[#673ab7]/70 hover:bg-transparent">Добавить</button>
+        </FormKit>
+    </div>
+    <div class="flex flex-col gap-6" v-if="user.role == 'Педагог'">
+        <div class="flex items-center gap-4 text-3xl font-Pacifico">
+            <Icon class="text-3xl text-[#f48fb1]/70" name="material-symbols:delete-rounded"/>
+            <p>Удаление урока</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            <div class="rounded-xl flex flex-col gap-4 p-4 border border-[#673ab7]/70" v-for="lesson in lessons">
+                <button @click="deleteLesson(lesson.id, lessons.indexOf(lesson))" class="self-end">
+                    <Icon class="text-2xl text-red-500" name="material-symbols:delete-rounded"/>
+                </button>
+                <p class="text-xl"><span class="font-Pacifico">Наименование</span> - {{ lesson.title }}</p>
+                <p class="text-lg"><span class="font-Pacifico">Описание</span> - {{ lesson.desc }}</p>
+                <p class="text-lg"><span class="font-Pacifico">Цена</span> - {{ lesson.price.toLocaleString() }}₽</p>
+                <video :src="`https://mnezrmcgjoxgghkosfmz.supabase.co/storage/v1/object/public/users/${lesson.video}`" controls class="rounded-xl w-full aspect-video"></video>
+            </div>
+        </div>
+    </div>  
     <div class="flex flex-col gap-6">
         <div class="flex items-center gap-4 text-3xl font-Pacifico">
             <Icon class="text-3xl text-[#f48fb1]/70" name="material-symbols:contacts-rounded"/>
@@ -96,13 +126,7 @@
         }
         reader.readAsDataURL(images[0])
         console.log(images)
-    }  
-
-    /* let previews = []
-    const loadPreview = (el) => {
-        previews = el.target.files
-        console.log(previews)
-    }   */
+    }      
 
 
     /* обновление данных */
@@ -177,6 +201,66 @@
         } else {            
             showMessage("Данные обновлены!", true)   
         }
+    }
+
+
+    /* добавление урока */
+    const lesson = ref({
+        title: "",
+        desc: "",
+        price: null
+    })
+
+    let lessonsVideo = []
+    const loadLesson = (el) => {
+        lessonsVideo = el.target.files
+        console.log(lessonsVideo)
+    }  
+
+    const addLesson = async () => {
+        await supabase.storage.from('users').upload(`lessons/${lessonsVideo[0].name}`, lessonsVideo[0])
+
+        const { data, error } = await supabase
+        .from('lessons')
+        .insert({
+            title: lesson.value.title, 
+            desc: lesson.value.desc, 
+            price: lesson.value.price,
+            video: `lessons/${lessonsVideo[0].name}`,
+            teacherId: id.value
+        })
+           
+        if(error) {
+            console.log(error)
+            showMessage("Произошла ошибка!", false)   
+        } else {            
+            showMessage("Данные обновлены!", true)   
+        }
+    }
+
+
+    /* отображение и удаление урока */
+    const { data:lessonsArray, error:lessonsError } = await supabase
+    .from('lessons')
+    .select('*')   
+    .eq('teacherId', id.value)  
+
+    const lessons = ref(lessonsArray)
+
+    const deleteLesson = async (idBase, idArray) => {        
+        const { error } = await supabase
+        .from('lessons')
+        .delete()
+        .eq('id', idBase)
+
+        lessons.value.splice(idArray, 1)
+
+        if(error) {
+            console.log(error)
+            showMessage("Произошла ошибка!", false)   
+        } else {            
+            showMessage("Урок удалён!", true)   
+        }          
     }
 
 
