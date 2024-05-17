@@ -171,7 +171,7 @@
         nickname: users[0].nickname,
         styles: [""]
     }) 
-    if(users[0].styles.length>0) {
+    if(users[0].styles && users[0].styles.length>0) {
         teacher.value.styles = users[0].styles
     }
 
