@@ -33,7 +33,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
             <div class="flex flex-col gap-4 items-center border border-gray-100 p-4 rounded-xl shadow-[0px_0px_13px_-7px_black]" v-for="lesson in lessons">
                 <video :src="`https://mnezrmcgjoxgghkosfmz.supabase.co/storage/v1/object/public/users/${lesson.preview}`" controls class="w-full aspect-video object-cover rounded-xl"></video>
-                <NuxtLink class="w-[160px] text-center py-0.5 px-4 rounded-full bg-[#673ab7]/70 border border-[#673ab7]/70 text-white transition-all duration-500 hover:text-[#673ab7]/70 hover:bg-transparent">Подробнее</NuxtLink>
+                <NuxtLink :to="`/teachers/teacher-${route.params.id}/lesson-${lesson.id}`" class="w-[160px] text-center py-0.5 px-4 rounded-full bg-[#673ab7]/70 border border-[#673ab7]/70 text-white transition-all duration-500 hover:text-[#673ab7]/70 hover:bg-transparent">Подробнее</NuxtLink>
             </div>
         </div>
     </div>
