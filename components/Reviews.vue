@@ -13,10 +13,10 @@
                     320: {
                         slidesPerView: 1,
                     },
-                    480: {
+                    768: {
                         slidesPerView: 3,
                     },
-                    640: {
+                    1280: {
                         slidesPerView: 4,
                     }
                 }"
