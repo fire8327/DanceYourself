@@ -1,5 +1,5 @@
 <template>
-     <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-6">
         <div class="flex flex-col gap-2">
             <div class="flex items-center gap-4 text-3xl font-Pacifico">
                 <Icon class="text-3xl text-[#f48fb1]/70" name="ph:chalkboard-teacher"/>
@@ -32,9 +32,8 @@
 </template>
 
 <script setup>
-    /* подключение БД и проверка пользователя */
+    /* подключение БД */
     const supabase = useSupabaseClient() 
-    const { authenticated, role, id } = storeToRefs(useUserStore())
 
     const { data, error } = await supabase
     .from('users')
