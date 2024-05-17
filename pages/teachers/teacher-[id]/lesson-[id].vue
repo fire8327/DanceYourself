@@ -6,7 +6,7 @@
                 <div class="flex flex-col gap-2">
                     <p class="text-2xl font-Pacifico">Об уроке</p>
                     <p class="mt-2">{{ lessons[0].title }}</p>
-                    <p>{{ lessons[0].desc }}</p>
+                    <p v-html="lessons[0].desc"></p>
                 </div>
                 <div class="flex flex-col gap-4">
                     <p class="text-2xl font-Pacifico">Стили</p>

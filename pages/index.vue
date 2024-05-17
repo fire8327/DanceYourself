@@ -46,11 +46,11 @@
             <CustomLink :title="'Подробнее'" :link="'/teachers'"></CustomLink>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-6">
-            <NuxtLink class="relative rounded-xl overflow-hidden group" v-for="n in 6">
-                <img src="https://godance.tv/sites/default/files/imagecache/preview/teachers/666/about/IMG_4558.jpeg" alt="" class="aspect-[7/10] object-cover transition-all duration-500 group-hover:scale-110">
+            <NuxtLink :to="`/teachers/teacher-${teacher.id}`" class="relative rounded-xl overflow-hidden group" v-for="teacher in data">
+                <img :src="`https://mnezrmcgjoxgghkosfmz.supabase.co/storage/v1/object/public/users/${teacher.avatar}`" alt="" class="aspect-[7/10] object-cover transition-all duration-500 group-hover:scale-110">
                 <div class="flex flex-col absolute bottom-4 left-0 w-full px-4 text-white z-[2]">
-                    <p class="text-sm">Choreo, Frame up strip, High-Heels, Hip-Hop</p>
-                    <p class="text-lg">Алина</p>
+                    <p class="text-sm">{{ teacher.styles.join(", ") }}</p>
+                    <p class="text-lg">{{ teacher.name }} - {{ teacher.nickname }}</p>
                 </div>
                 <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black z-[1]"></div>
             </NuxtLink>
@@ -64,4 +64,13 @@
 <script setup>
     /* проверка входа */
     const { authenticated } = storeToRefs(useUserStore())
+
+
+    /* подключение БД */
+    const supabase = useSupabaseClient() 
+
+    const { data, error } = await supabase
+    .from('users')
+    .select('*')   
+    .eq('role', 'Педагог')  
 </script>

@@ -7,15 +7,15 @@
         <div class="flex max-lg:flex-col gap-6">
             <img :src="`https://mnezrmcgjoxgghkosfmz.supabase.co/storage/v1/object/public/users/${users[0].avatar}`" alt="" class="rounded-xl lg:w-1/2 object-cover">
             <div class="flex flex-col gap-6 lg:w-1/2">
-                <div class="flex flex-col">
+                <div class="flex flex-col gap-2">
                     <p class="text-2xl text-[#f48fb1]/70 font-Pacifico">Танцевальные стили</p>
-                    <p class="text-lg">{{ users[0].styles.join(", ") }}</p>
+                    <p class="text-xl">{{ users[0].styles.join(", ") }}</p>
                 </div>
-                <div class="flex flex-col">
+                <div class="flex flex-col gap-2">
                     <p class="text-2xl text-[#f48fb1]/70 font-Pacifico">Преподаватель о себе</p>
-                    <p v-html="users[0].desc" class="text-lg"></p>
+                    <p v-html="users[0].desc" class="text-xl"></p>
                 </div>
-                <div class="flex flex-col">
+                <div class="flex flex-col gap-2">
                     <p class="text-2xl text-[#f48fb1]/70 font-Pacifico">Контакты</p>
                     <NuxtLink :to="`https://t.me/${users[0].nickname}`" target="_blank" class="flex items-center gap-2 transition-all duration-500 hover:opacity-60">
                         <Icon class="text-3xl" name="logos:telegram"/>
