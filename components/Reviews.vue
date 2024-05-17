@@ -30,12 +30,12 @@
             </SwiperSlide>
         </Swiper>
     </div>  
-    <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-6" v-if="authenticated && role == 'Ученик'">
         <div class="flex items-center gap-4 text-3xl font-Pacifico">
             <Icon class="text-3xl text-[#f48fb1]/70" name="material-symbols-light:rate-review"/>
             <p>Оставить отзыв</p>
         </div>
-        <FormKit v-if="authenticated && role == 'Ученик'" @submit="addReview" type="form" :actions="false" messages-class="hidden" form-class="flex flex-col gap-4 items-center justify-center">
+        <FormKit @submit="addReview" type="form" :actions="false" messages-class="hidden" form-class="flex flex-col gap-4 items-center justify-center">
             <FormKit type="textarea" v-model="reviewText" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Отзыв" outer-class="w-full" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Ваш отзыв"/>
             <button type="submit" class="w-[160px] text-center py-0.5 px-4 rounded-full bg-[#673ab7]/70 border border-[#673ab7]/70 text-white transition-all duration-500 hover:text-[#673ab7]/70 hover:bg-transparent">Отправить</button>
         </FormKit>
