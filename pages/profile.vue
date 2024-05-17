@@ -55,7 +55,8 @@
             <FormKit type="text" v-model="lesson.title" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Название урока" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Название урока"/>
             <FormKit type="textarea" v-model="lesson.desc" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Описание урока" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Описание урока"/>
             <FormKit type="text" v-model="lesson.price" validation="required|number" messages-class="text-[#E9556D] font-Pacifico" name="Цена" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Цена"/>
-            <FormKit type="file" @change="loadLesson" accept="video/*" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Видео" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Видео"/>
+            <FormKit type="file" @change="loadPreview" accept="video/*" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Превью" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" label-class="font-Pacifico" label="Превью"/>
+            <FormKit type="file" @change="loadLesson" accept="video/*" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Видео" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" label-class="font-Pacifico" label="Видео"/>
             <button type="submit" class="w-[160px] text-center py-0.5 px-4 rounded-full bg-[#673ab7]/70 border border-[#673ab7]/70 text-white transition-all duration-500 hover:text-[#673ab7]/70 hover:bg-transparent">Добавить</button>
         </FormKit>
     </div>
@@ -217,16 +218,24 @@
         console.log(lessonsVideo)
     }  
 
+    let previews = []
+    const loadPreview = (el) => {
+        previews = el.target.files
+        console.log(previews)
+    }  
+
     const addLesson = async () => {
         await supabase.storage.from('users').upload(`lessons/${lessonsVideo[0].name}`, lessonsVideo[0])
+        await supabase.storage.from('users').upload(`previews/${previews[0].name}`, previews[0])
 
         const { data, error } = await supabase
         .from('lessons')
         .insert({
             title: lesson.value.title, 
-            desc: lesson.value.desc, 
+            desc: lesson.value.desc.replace(/(?:\r\n|\r|\n)/g, '<br>'), 
             price: lesson.value.price,
             video: `lessons/${lessonsVideo[0].name}`,
+            preview: `previews/${previews[0].name}`,
             teacherId: id.value
         })
            
@@ -234,7 +243,8 @@
             console.log(error)
             showMessage("Произошла ошибка!", false)   
         } else {            
-            showMessage("Данные обновлены!", true)   
+            showMessage("Урок добавлен!", true)   
+            router.go()
         }
     }
 
