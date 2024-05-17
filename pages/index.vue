@@ -3,7 +3,7 @@
        <div class="flex flex-col gap-6 lg:w-1/2">
             <p class="text-3xl font-Pacifico text-transparent !bg-clip-text animate-text">Влюбляйся в танец и в себя</p>
             <p class="opacity-70">Присоединяйтесь к нам, чтобы открыть для себя увлекательный мир танцев! Наш агрегатор предлагает широкий спектр курсов для всех возрастов и уровней подготовки. Независимо от того, вы начинающий или опытный танцор, у нас найдется что-то интересное для вас.</p>
-            <CustomLink :title="'Присоединиться'" :link="authenticated ? '/reg' : '/teachers'"></CustomLink>
+            <CustomLink :title="'Присоединиться'" :link="authenticated ? '/teachers' : '/reg'"></CustomLink>
         </div>
         <img src="/images/hero/bg.jpg" alt="" class="lg:w-1/2 rounded-xl">
     </div>
