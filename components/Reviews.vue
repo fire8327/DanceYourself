@@ -59,7 +59,7 @@
     const reviews = ref(data)
 
 
-    /* создание сообщений и роутера */
+    /* создание сообщений */
     const showMessage = useMessagesStore().showMessage
 
 

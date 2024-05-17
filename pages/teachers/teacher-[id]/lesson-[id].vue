@@ -16,7 +16,7 @@
                     <p class="text-2xl font-Pacifico">Цена</p>
                     <p>{{ lessons[0].price.toLocaleString() }}₽</p>
                 </div>
-                <button v-if="authenticated && role == 'Ученик'" class="w-[160px] text-center py-0.5 px-4 rounded-full bg-[#673ab7]/70 border border-[#673ab7]/70 text-white transition-all duration-500 hover:text-[#673ab7]/70 hover:bg-transparent">В корзину</button>
+                <button @click="addCart" v-if="authenticated && role == 'Ученик'" class="w-[160px] text-center py-0.5 px-4 rounded-full bg-[#673ab7]/70 border border-[#673ab7]/70 text-white transition-all duration-500 hover:text-[#673ab7]/70 hover:bg-transparent">В корзину</button>
             </div>
             <div class="flex flex-col gap-4 border border-gray-100 p-4 rounded-xl shadow-[0px_0px_13px_-7px_black] text-xl lg:w-1/2">
                 <p class="text-2xl font-Pacifico">О преподавателе</p>
@@ -45,5 +45,45 @@
 
 
     /* проверка входа */
-    const { authenticated, role } = storeToRefs(useUserStore())
+    const { authenticated, role, id } = storeToRefs(useUserStore())
+
+
+    /* создание сообщений */
+    const showMessage = useMessagesStore().showMessage
+
+
+    /* добавление в корзину */
+    const addCart = async () => {
+        const { data: carts } = await supabase
+        .from('cart')
+        .select(`*`)
+        .eq('status', 'В корзине')
+        .eq('userId', `${id.value}`)
+        .eq('lessonId', `${route.params.id}`)
+
+        if(carts && carts.length>0) {
+            await supabase
+            .from('cart')
+            .update({ count: `${Number(carts[0].count)+1}` })
+            .eq('status', 'В корзине')
+            .eq('userId', `${id.value}`)
+            .eq('lessonId', `${route.params.id}`)
+            .select()      
+        
+            showMessage("Количество обновлено!", true)   
+        } else {            
+            const { data, error } = await supabase
+            .from('cart')
+            .insert([
+                { userId: `${id.value}`, lessonId: `${route.params.id}`, status: 'В корзине', count: 1 },
+            ])
+            .select()       
+            
+            if(error) {
+                showMessage("Произошла ошибка!", false)   
+            } else {
+                showMessage("Добавлено в корзину!", true)   
+            }            
+        }
+    }
 </script>
