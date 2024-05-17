@@ -31,8 +31,7 @@
         </div>
         <FormKit @submit="updateProfile" type="form" :actions="false" messages-class="hidden" form-class="flex flex-col gap-4 items-center justify-center">               
             <FormKit type="text" v-model="teacher.nickname" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Никнейм" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Никнейм"/>
-            <FormKit type="textarea" v-model="teacher.desc" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Описание" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Расскажите о себе"/>
-            <FormKit @change="loadPreview" type="file" label messages-class="text-[#E9556D] font-Pacifico" name="Превью" outer-class="w-full md:w-2/3 lg:w-1/2" accept="video/*" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Превью"/>  
+            <FormKit type="textarea" v-model="teacher.desc" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Описание" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full h-[200px]" placeholder="Расскажите о себе"/>
             <div class="flex flex-col gap-4 w-full md:w-2/3 lg:w-1/2">
                 <div class="flex flex-col gap-2 rounded-xl border border-[#673ab7]/70 p-4 w-full" v-for="(characteristic, i) in teacher.styles">
                     <button @click="deleteCharacteristic(i)" type="button" class="px-4 py-2 rounded-xl text-white bg-[#673ab7]/70 w-fit self-end">
@@ -99,11 +98,11 @@
         console.log(images)
     }  
 
-    let previews = []
+    /* let previews = []
     const loadPreview = (el) => {
         previews = el.target.files
         console.log(previews)
-    }  
+    }   */
 
 
     /* обновление данных */
@@ -162,25 +161,14 @@
 
 
     /* обновление профиля */
-    const updateProfile = async () => {    
-        let updateData = {
+    const updateProfile = async () => {   
+        const { data, error } = await supabase
+        .from('users')
+        .update({
             desc: teacher.value.desc.replace(/(?:\r\n|\r|\n)/g, '<br>'), 
             nickname: teacher.value.nickname, 
             styles: teacher.value.styles
-        }
-
-        if(previews.length > 0) {
-            await supabase.storage.from('users').upload(`previews/${previews[0].name}`, previews[0])           
-            updateData.avatar = `previews/${previews[0].name}`
-        }
-
-        if (previews.length > 0 && users[0].preview) {
-            const { data, error } = await supabase.storage.from('users').remove([users[0].preview])
-        }
-
-        const { data, error } = await supabase
-        .from('users')
-        .update(updateData)
+        })
         .eq('id', id.value)
            
         if(error) {
