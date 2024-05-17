@@ -8,19 +8,22 @@
             <p class="opacity-70">Выбери своего преподавателя танцев и приступай к тренеровкам вместе с ним.</p>
         </div>
     </div>
-    <FormKit type="form" :actions="false" messages-class="hidden"  form-class="flex justify-between max-lg:flex-col max-lg:items-center gap-6 w-full">
+    <FormKit @submit="filterProducts" type="form" :actions="false" messages-class="hidden"  form-class="flex justify-between max-lg:flex-col max-lg:items-center gap-6 w-full">
         <div class="flex gap-6 max-lg:flex-col w-full lg:w-1/2">
-            <FormKit type="text" messages-class="text-[#E9556D] font-Pacifico" name="Никнейм" outer-class="w-full lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Никнейм"/>
-            <FormKit type="select" :options="['Все', 'Стиль 1', 'Стиль 2']" messages-class="text-[#E9556D] font-Pacifico" name="Стиль танца" outer-class="w-full lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Стиль танца"/>
+            <FormKit v-model="filters.nickname" type="text" messages-class="text-[#E9556D] font-Pacifico" name="Никнейм" outer-class="w-full lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Никнейм"/>
+            <FormKit v-model="filters.style" type="select" :options="inputStyles" messages-class="text-[#E9556D] font-Pacifico" name="Стиль танца" outer-class="w-full lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Стиль танца"/>
         </div>
-        <button type="submit" class="w-[160px] text-center py-0.5 px-4 rounded-full bg-[#673ab7]/70 border border-[#673ab7]/70 text-white transition-all duration-500 hover:text-[#673ab7]/70 hover:bg-transparent">Применить</button>
+        <div class="flex items-center gap-2 max-md:flex-col max-md:w-full">
+            <button type="submit" class="w-full md:w-[160px] text-center py-0.5 px-4 rounded-full bg-[#673ab7]/70 border border-[#673ab7]/70 text-white transition-all duration-500 hover:text-[#673ab7]/70 hover:bg-transparent">Применить</button>
+            <button type="button" @click="cancelFilters" class="w-full md:w-[160px] text-center py-0.5 px-4 rounded-full hover:bg-[#673ab7]/70 border border-[#673ab7]/70 hover:text-white transition-all duration-500 text-[#673ab7]/70 bg-transparent">Отменить</button>
+        </div>
     </FormKit>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-        <NuxtLink class="relative rounded-xl overflow-hidden group" v-for="n in 4">
-            <img src="https://godance.tv/sites/default/files/imagecache/preview/teachers/666/about/IMG_4558.jpeg" alt="" class="aspect-[7/10] object-cover transition-all duration-500 group-hover:scale-110">
+        <NuxtLink :to="`teachers/teacher-${teacher.id}`" class="relative rounded-xl overflow-hidden group" v-for="teacher in teachers">
+            <img :src="`https://mnezrmcgjoxgghkosfmz.supabase.co/storage/v1/object/public/users/${teacher.avatar}`" alt="" class="aspect-[7/10] object-cover transition-all duration-500 group-hover:scale-110">
             <div class="flex flex-col absolute bottom-4 left-0 w-full px-4 text-white z-[2]">
-                <p class="text-sm">Choreo, Frame up strip, High-Heels, Hip-Hop</p>
-                <p class="text-lg">Алина</p>
+                <p class="text-sm">{{ teacher.styles.join(', ') }}</p>
+                <p class="text-lg">{{ teacher.name }} - {{ teacher.nickname }}</p>
             </div>
             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black z-[1]"></div>
         </NuxtLink>
@@ -29,5 +32,45 @@
 </template>
 
 <script setup>
+    /* подключение БД и проверка пользователя */
+    const supabase = useSupabaseClient() 
+    const { authenticated, role, id } = storeToRefs(useUserStore())
 
+    const { data, error } = await supabase
+    .from('users')
+    .select('*')   
+    .eq('role', 'Педагог')  
+
+
+    /* создание фильтров */
+    const teachers = ref(data)
+    const inputStyles = ref(["Все"])
+    teachers.value.flatMap(teacher => teacher.styles).forEach(style => {
+        if(!inputStyles.value.includes(style)) {
+            inputStyles.value.push(style)
+        }
+    }) 
+
+    const filters = ref({
+        style: "Все",
+        nickname: ""
+    })
+
+    const filterProducts = () => {
+        teachers.value = data
+        const filter = teachers.value.filter(el => {
+            if ((filters.value.style != 'Все' && !el.styles.includes(filters.value.style)) ||
+                (filters.value.nickname && el.nickname != filters.value.nickname)) {
+                return false
+            }
+            return true
+        })     
+        teachers.value = filter
+    }  
+
+    const cancelFilters = () => {
+        teachers.value = data
+        filters.value.nickname = ""
+        filters.value.style = "Все"
+    }
 </script>
