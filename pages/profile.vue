@@ -247,7 +247,15 @@
             showMessage("Произошла ошибка!", false)   
         } else {            
             showMessage("Урок добавлен!", true)   
-            router.go()
+            lessons.value.push({
+                title: lesson.value.title, 
+                desc: lesson.value.desc.replace(/(?:\r\n|\r|\n)/g, '<br>'), 
+                price: lesson.value.price,
+                video: `lessons/${lessonsVideo[0].name}`,
+                preview: `previews/${previews[0].name}`,
+                style: lesson.value.style,
+                teacherId: id.value
+            })
         }
     }
 
@@ -257,6 +265,7 @@
     .from('lessons')
     .select('*')   
     .eq('teacherId', id.value)  
+    .order('id', { ascending: true })
 
     const lessons = ref(lessonsArray)
 

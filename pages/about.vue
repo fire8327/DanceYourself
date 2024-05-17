@@ -14,6 +14,7 @@
         </div>
     </div>
     <Gallery></Gallery>
+    <Reviews></Reviews>
 </template>
 
 <script setup>

@@ -63,3 +63,7 @@
     background-size: 200%;
     -webkit-text-fill-color: transparent;
 }
+
+.swiper-pagination-bullet-active {
+    @apply !bg-[#673ab7]/70 
+}

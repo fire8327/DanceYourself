@@ -7,7 +7,8 @@ export default defineNuxtConfig({
     "nuxt-icon",
     "@pinia/nuxt",
     "@formkit/nuxt",
-    "@nuxtjs/supabase"
+    "@nuxtjs/supabase",
+    "nuxt-swiper"
   ],
   googleFonts: {
     families: {
