@@ -334,14 +334,12 @@
 
 
     /* запрос на соединение занятий и учеников/педагогов */
-    if(privateLessons && privateLessons.length>0) {
-        const relatedUserId = role.value == "Ученик" ? privateLessons[0].teacherId : privateLessons[0].userId
+    const relatedUserId = role.value == "Ученик" ? privateLessons[0]?.teacherId : privateLessons[0]?.userId
     
-        const { data: userOrTeacher, error: userOrTeacherError } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', relatedUserId)
-    }
+    const { data: userOrTeacher, error: userOrTeacherError } = await supabase
+    .from('users')
+    .select('*')
+    .eq('id', relatedUserId)
 
 
     /* подтверждение и отмена заявок */
