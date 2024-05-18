@@ -106,12 +106,12 @@
             <p>Индивидуальные занятия</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 text-xl">
-            <div class="flex flex-col gap-4 p-4 rounded-xl border border-[#673ab7]/70" v-for="privateLesson in privateLessons">
+            <div class="flex flex-col gap-4 p-4 rounded-xl border border-[#673ab7]/70" v-for="privateLesson in privateLessonsArray">
                 <div class="flex items-center gap-4 self-end">
-                    <button @click="completePrivateLesson(privateLesson.id), privateLesson.status == 'Подтверждена'" v-if="privateLesson.status == 'Новая' && role == 'Педагог'">
+                    <button @click="completePrivateLesson(privateLesson.id)" v-if="privateLesson.status == 'Новая' && role == 'Педагог'">
                         <Icon class="text-3xl text-green-500" name="material-symbols-light:check-circle"/>
                     </button>
-                    <button @click="cancelPrivateLesson(privateLesson.id), privateLesson.status == 'Отменена'" v-if="privateLesson.status == 'Новая'">
+                    <button @click="cancelPrivateLesson(privateLesson.id)" v-if="privateLesson.status == 'Новая'">
                         <Icon class="text-3xl text-red-500" name="material-symbols:cancel"/>
                     </button>
                 </div>
@@ -339,6 +339,8 @@
 
 
     /* индивидуальные занятия */
+
+    /* запрос на вывод занятий */
     let query = supabase
     .from('privateLessons')
     .select('*')    
@@ -349,8 +351,11 @@
         query = query.eq('teacherId', id.value)
     }
 
-    const { data:privateLessons, error:privateLessonsError } = await query    
-    
+    const { data:privateLessons, error:privateLessonsError } = await query 
+    const privateLessonsArray = ref(privateLessons)
+
+
+    /* запрос на соединение занятий и учеников/педагогов */
     const relatedUserId = role.value == "Ученик" ? privateLessons[0].teacherId : privateLessons[0].userId
 
     const { data: userOrTeacher, error: userOrTeacherError } = await supabase
@@ -373,6 +378,10 @@
             showMessage("Произошла ошибка!", false)   
         } else {            
             showMessage(Message, true)   
+            const lesson = privateLessonsArray.value.find(lesson => lesson.id == lessonId)
+            if (lesson) {
+                lesson.status = newStatus
+            }
         }
     }
 
