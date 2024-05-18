@@ -25,12 +25,11 @@
             </div>
         </div>
     </div>
-    <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-6" v-if="lessons && lessons.length>0">
         <div class="flex items-center gap-4 text-3xl font-Pacifico">
             <Icon class="text-3xl text-[#f48fb1]/70" name="material-symbols:smart-display"/>
             <p>Видеоуроки преподавателя</p>
         </div>
-        {{ buyId }}
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
             <div class="flex flex-col gap-4" v-for="lesson in lessons">
                 <div class="flex items-center justify-center rounded-xl bg-black overflow-hidden">

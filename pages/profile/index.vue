@@ -21,20 +21,11 @@
                     <FormKit @change="loadImage" type="file" accept=".png,.jpg,.jpeg,.svg,.webp,.bmp" outer-class="hidden"/>
                 </label>
             </div>  
-            <button type="submit" class="w-[160px] text-center py-0.5 px-4 rounded-full bg-[#673ab7]/70 border border-[#673ab7]/70 text-white transition-all duration-500 hover:text-[#673ab7]/70 hover:bg-transparent">Обновить</button>
-        </FormKit>
-    </div>
-    <div class="flex flex-col gap-6" v-if="user.role == 'Педагог'">
-        <div class="flex items-center gap-4 text-3xl font-Pacifico">
-            <Icon class="text-3xl text-[#f48fb1]/70" name="material-symbols:contacts-rounded"/>
-            <p>Оформление профиля педагога</p>
-        </div>
-        <FormKit @submit="updateProfile" type="form" :actions="false" messages-class="hidden" form-class="flex flex-col gap-4 items-center justify-center">               
-            <FormKit type="text" v-model="teacher.nickname" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Никнейм" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Никнейм"/>
-            <FormKit type="textarea" v-model="teacher.desc" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Описание" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full h-[200px]" placeholder="Расскажите о себе"/>
-            <div class="flex flex-col gap-4 w-full md:w-2/3 lg:w-1/2">
-                <div class="flex items-center gap-2 w-full" v-for="(characteristic, i) in teacher.styles">
-                    <FormKit v-model="teacher.styles[i]" validation="required" outer-class="w-full" message-class="text-[#E9556D] font-Pacifico" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" :name="`Стиль ${i + 1}`" placeholder="Стиль танца" type="text"/>                    
+            <FormKit v-if="user.role == 'Педагог'" type="text" v-model="user.nickname" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Никнейм" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Никнейм"/>
+            <FormKit v-if="user.role == 'Педагог'" type="textarea" v-model="user.desc" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Описание" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full h-[200px]" placeholder="Расскажите о себе"/>
+            <div v-if="user.role == 'Педагог'" class="flex flex-col gap-4 w-full md:w-2/3 lg:w-1/2">
+                <div class="flex items-center gap-2 w-full" v-for="(characteristic, i) in user.styles">
+                    <FormKit v-model="user.styles[i]" validation="required" outer-class="w-full" message-class="text-[#E9556D] font-Pacifico" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" :name="`Стиль ${i + 1}`" placeholder="Стиль танца" type="text"/>                    
                     <button @click="deleteCharacteristic(i)" type="button" class="px-4 py-2 rounded-xl text-white bg-[#673ab7]/70 w-fit self-end">
                         <Icon class="text-2xl" name="material-symbols:delete-forever"/>
                     </button>
@@ -158,8 +149,30 @@
         password: users[0].password
     }) 
 
+    if(role.value == 'Педагог') {
+        user.value.desc = users[0].desc.replace(/<br>/g, '\n'),        
+        user.value.nickname = users[0].nickname,
+        user.value.styles = [""]
+    }
+
     const formAvatar = ref()
     formAvatar.value = `https://mnezrmcgjoxgghkosfmz.supabase.co/storage/v1/object/public/users/${user.value.avatar}`
+
+
+    /* управление характеристиками */
+    if(users[0].styles && users[0].styles.length>0) {
+        user.value.styles = users[0].styles
+    }
+
+    const addCharacteristic = () => {
+        user.value.styles.push("")
+    }
+
+    const deleteCharacteristic = (id) => {
+        if(user.value.styles.length > 1) {
+            user.value.styles.splice(id, 1)
+        }
+    }
 
 
     /* добавление фото и превью */
@@ -185,6 +198,12 @@
             password: user.value.password
         }
 
+        if(role.value == 'Педагог') {
+            updateData.desc = user.value.desc.replace(/(?:\r\n|\r|\n)/g, '<br>'), 
+            updateData.nickname = user.value.nickname, 
+            updateData.styles = user.value.styles
+        }
+
         if(images.length > 0) {
             await supabase.storage.from('users').upload(`avatars/${images[0].name}`, images[0])           
             updateData.avatar = `avatars/${images[0].name}`
@@ -198,47 +217,6 @@
         const { data, error } = await supabase
         .from('users')
         .update(updateData)
-        .eq('id', id.value)
-           
-        if(error) {
-            console.log(error)
-            showMessage("Произошла ошибка!", false)   
-        } else {            
-            showMessage("Данные обновлены!", true)   
-        }
-    }
-
-
-    /* оформление профиля педагога и управление характеристиками */
-    const teacher = ref({
-        desc: users[0].desc.replace(/<br>/g, '\n'),
-        nickname: users[0].nickname,
-        styles: [""]
-    }) 
-    if(users[0].styles && users[0].styles.length>0) {
-        teacher.value.styles = users[0].styles
-    }
-
-    const addCharacteristic = () => {
-        teacher.value.styles.push("")
-    }
-
-    const deleteCharacteristic = (id) => {
-        if(teacher.value.styles.length > 1) {
-            teacher.value.styles.splice(id, 1)
-        }
-    }
-
-
-    /* обновление профиля */
-    const updateProfile = async () => {   
-        const { data, error } = await supabase
-        .from('users')
-        .update({
-            desc: teacher.value.desc.replace(/(?:\r\n|\r|\n)/g, '<br>'), 
-            nickname: teacher.value.nickname, 
-            styles: teacher.value.styles
-        })
         .eq('id', id.value)
            
         if(error) {
