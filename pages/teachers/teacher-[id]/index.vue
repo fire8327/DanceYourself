@@ -30,6 +30,7 @@
             <Icon class="text-3xl text-[#f48fb1]/70" name="material-symbols:smart-display"/>
             <p>Видеоуроки преподавателя</p>
         </div>
+        {{ buyId }}
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
             <div class="flex flex-col gap-4" v-for="lesson in lessons">
                 <div class="flex items-center justify-center rounded-xl bg-black overflow-hidden">
@@ -46,15 +47,32 @@
     const supabase = useSupabaseClient() 
     const route = useRoute()
 
-    const { data:users, error } = await supabase
+    const { data:users, error:usersError } = await supabase
     .from('users')
     .select('*')   
     .eq('id', route.params.id)  
 
 
     /* уроки */
-    const { data:lessons, error:lessonsError } = await supabase
+    const { data, error } = await supabase
     .from('lessons')
     .select('*')   
     .eq('teacherId', route.params.id)  
+    const lessons = ref(data)
+    
+    
+    /* проверка входа и покупки */
+    const { authenticated, id } = storeToRefs(useUserStore())
+    
+    if (authenticated.value) {
+        const { data:cart, error:cartError } = await supabase
+        .from('cart')
+        .select('*')
+        .eq('status', 'Оформлен')
+        .eq('userId', id.value)
+    
+        const buyIdSet = new Set(cart.map(el => el.lessonId))
+
+        lessons.value = lessons.value.filter(el => !buyIdSet.has(el.id))
+    }
 </script>
