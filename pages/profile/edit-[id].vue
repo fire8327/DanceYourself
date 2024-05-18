@@ -31,7 +31,7 @@
     /* создание формы */
     const lessonForm = ref({
         title: lessons[0].title,
-        desc: lessons[0].desc,
+        desc: lessons[0].desc.replace(/<br>/g, '\n'),
         price: lessons[0].price,
         style: lessons[0].style
     }) 
@@ -48,7 +48,7 @@
         .from('lessons')
         .update({
             title: lessonForm.value.title,
-            desc: lessonForm.value.desc,
+            desc: lessonForm.value.desc.replace(/(?:\r\n|\r|\n)/g, '<br>'),
             price: lessonForm.value.price,
             style: lessonForm.value.style
         })

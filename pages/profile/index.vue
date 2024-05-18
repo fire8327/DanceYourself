@@ -102,6 +102,28 @@
     </div>
     <div class="flex flex-col gap-6">
         <div class="flex items-center gap-4 text-3xl font-Pacifico">
+            <Icon class="text-3xl text-[#f48fb1]/70" name="streamline:class-lesson-solid"/>
+            <p>Индивидуальные занятия</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 text-xl">
+            <div class="flex flex-col gap-4 p-4 rounded-xl border border-[#673ab7]/70" v-for="privateLesson in privateLessons">
+                <div class="flex items-center gap-4 self-end">
+                    <button @click="completePrivateLesson(privateLesson.id), privateLesson.status == 'Подтверждена'" v-if="privateLesson.status = 'Новая' && role.value == 'Педагог'">
+                        <Icon class="text-3xl text-green-500" name="material-symbols-light:check-circle"/>
+                    </button>
+                    <button @click="cancelPrivateLesson(privateLesson.id), privateLesson.status == 'Отменена'" v-if="privateLesson.status = 'Новая'">
+                        <Icon class="text-3xl text-red-500" name="material-symbols:cancel"/>
+                    </button>
+                </div>
+                <p v-if="user.role == 'Педагог'"><span class="font-Pacifico">Педагог</span> - {{ privateLesson.users.surname }} {{ privateLesson.users.name }}</p>
+                <p v-if="user.role == 'Ученик'"><span class="font-Pacifico">Ученик</span> - {{ privateLesson.users.surname }} {{ privateLesson.users.name }}</p>
+                <p><span class="font-Pacifico">Дата, время занятия</span> - {{ privateLesson.dateTime }}</p>
+                <p><span class="font-Pacifico">Статус заявки</span> - {{ privateLesson.status }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-col gap-6">
+        <div class="flex items-center gap-4 text-3xl font-Pacifico">
             <Icon class="text-3xl text-[#f48fb1]/70" name="material-symbols:contacts-rounded"/>
             <p>Выход из аккаунта</p>
         </div>
@@ -314,6 +336,53 @@
     .select('*, lessons (*)')
     .eq('status', 'Оформлен')
     .eq('userId', id.value)
+
+
+    /* индивидуальные занятия */
+    let query = supabase
+    .from('privateLessons')
+
+    if(role.value == "Ученик"){
+        query = query.select('*, users (*)')
+        query = query.eq('users.id', id.value)
+    }
+
+    if(role.value == "Педагог"){
+        query = query.select('*, users!privateLessons_teacherId_fkey(*)')
+        query = query.eq('teacherId', id.value)
+    }
+    
+    const { data:privateLessons, error:privateLessonsError } = await query
+
+    if(privateLessonsError) {
+        console.log(privateLessonsError)
+    }
+
+
+    /* подтверждение и отмена заявок */
+    const updatePrivateLesson = async (lessonId, newStatus, Message) => {
+        const { data, error } = await supabase
+        .from('privateLessons')
+        .update({
+            status: newStatus
+        })
+        .eq('id', lessonId)
+
+        if(error) {
+            console.log(error)
+            showMessage("Произошла ошибка!", false)   
+        } else {            
+            showMessage(Message, true)   
+        }
+    }
+
+    const completePrivateLesson = async (id) => {
+       await updatePrivateLesson(id, "Подтверждена", "Заявка подтверждена!") 
+    }
+
+    const cancelPrivateLesson = async (id) => {
+       await updatePrivateLesson(id, "Отменена", "Заявка отменена!")        
+    }
 
 
     /* выход из аккаунта */

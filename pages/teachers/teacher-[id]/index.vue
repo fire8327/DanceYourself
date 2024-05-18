@@ -40,12 +40,27 @@
             </div>
         </div>
     </div>
+    <div class="flex flex-col gap-6" v-if="role == 'Ученик'">
+        <div class="flex items-center gap-4 text-3xl font-Pacifico">
+            <Icon class="text-3xl text-[#f48fb1]/70" name="streamline:class-lesson-solid"/>
+            <p>Запись на индивидуальные занятия</p>
+        </div>
+        <FormKit @submit="joinPrivate" type="form" :actions="false" messages-class="hidden" form-class="flex flex-col gap-4 items-center justify-center">               
+            <FormKit type="datetime-local" v-model="privateDate" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Дата записи" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="Дата записи"/>
+            <button type="submit" class="w-[160px] text-center py-0.5 px-4 rounded-full bg-[#673ab7]/70 border border-[#673ab7]/70 text-white transition-all duration-500 hover:text-[#673ab7]/70 hover:bg-transparent">Записаться</button>
+        </FormKit>
+    </div>
 </template>
 
 <script setup>
     /* подключение БД и проверка педагога */
     const supabase = useSupabaseClient() 
     const route = useRoute()
+
+
+    /* создание сообщений и роутера */
+    const showMessage = useMessagesStore().showMessage
+    const router = useRouter()
 
     const { data:users, error:usersError } = await supabase
     .from('users')
@@ -62,7 +77,7 @@
     
     
     /* проверка входа и покупки */
-    const { authenticated, id } = storeToRefs(useUserStore())
+    const { authenticated, id, role } = storeToRefs(useUserStore())
     
     if (authenticated.value) {
         const { data:cart, error:cartError } = await supabase
@@ -74,5 +89,27 @@
         const buyIdSet = new Set(cart.map(el => el.lessonId))
 
         lessons.value = lessons.value.filter(el => !buyIdSet.has(el.id))
+    }
+
+
+    /* индивидуальные занятия */
+    const privateDate = ref()
+    const joinPrivate = async () => {
+        const { data, error } = await supabase
+        .from('privateLessons')
+        .insert({
+            userId: id.value, 
+            teacherId: route.params.id, 
+            dateTime: new Date (privateDate.value).toLocaleString(),
+            status: 'Новая'
+        })
+           
+        if(error) {
+            console.log(error)
+            showMessage("Произошла ошибка!", false)   
+        } else {            
+            showMessage("Запись успешна!", true)   
+            router.push("/profile")
+        }
     }
 </script>
