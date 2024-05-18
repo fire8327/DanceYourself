@@ -37,7 +37,7 @@
             <button type="submit" class="w-[160px] text-center py-0.5 px-4 rounded-full bg-[#673ab7]/70 border border-[#673ab7]/70 text-white transition-all duration-500 hover:text-[#673ab7]/70 hover:bg-transparent">Обновить</button>
         </FormKit>
     </div>
-    <div class="flex flex-col gap-6" v-if="user.role == 'Педагог'">
+    <div class="flex flex-col gap-6" v-if="user.role == 'Педагог' && lessons && lessons.length>0">
         <div class="flex items-center gap-4 text-3xl font-Pacifico">
             <Icon class="text-3xl text-[#f48fb1]/70" name="material-symbols:delete-rounded"/>
             <p>Просмотр урока</p>
@@ -334,12 +334,14 @@
 
 
     /* запрос на соединение занятий и учеников/педагогов */
-    const relatedUserId = role.value == "Ученик" ? privateLessons[0].teacherId : privateLessons[0].userId
-
-    const { data: userOrTeacher, error: userOrTeacherError } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', relatedUserId)
+    if(privateLessons && privateLessons.length>0) {
+        const relatedUserId = role.value == "Ученик" ? privateLessons[0].teacherId : privateLessons[0].userId
+    
+        const { data: userOrTeacher, error: userOrTeacherError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', relatedUserId)
+    }
 
 
     /* подтверждение и отмена заявок */
