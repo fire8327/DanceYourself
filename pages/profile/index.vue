@@ -106,8 +106,8 @@
                         <Icon class="text-3xl text-red-500" name="material-symbols:cancel"/>
                     </button>
                 </div>
-                <p v-if="user.role == 'Ученик'"><span class="font-Pacifico">Педагог</span> - {{ userOrTeacher[0].surname }} {{ userOrTeacher[0].name }}</p>
-                <p v-if="user.role == 'Педагог'"><span class="font-Pacifico">Ученик</span> - {{ userOrTeacher[0].surname }} {{ userOrTeacher[0].name }}</p>
+                <p v-if="user.role == 'Ученик' && userOrTeacher"><span class="font-Pacifico">Педагог</span> - {{ userOrTeacher[0].surname }} {{ userOrTeacher[0].name }}</p>
+                <p v-if="user.role == 'Педагог' && userOrTeacher"><span class="font-Pacifico">Ученик</span> - {{ userOrTeacher[0].surname }} {{ userOrTeacher[0].name }}</p>
                 <p><span class="font-Pacifico">Дата, время занятия</span> - {{ privateLesson.dateTime }}</p>
                 <p><span class="font-Pacifico">Статус заявки</span> - {{ privateLesson.status }}</p>
             </div>
