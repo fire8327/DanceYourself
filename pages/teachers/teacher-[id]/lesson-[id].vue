@@ -1,6 +1,8 @@
 <template>
     <div class="flex flex-col gap-6">
-        <video :src="`https://mnezrmcgjoxgghkosfmz.supabase.co/storage/v1/object/public/users/${lessons[0].preview}`" controls class="w-full aspect-video object-cover rounded-xl"></video>
+        <div class="flex items-center justify-center rounded-xl bg-black overflow-hidden w-full">
+            <video :src="`https://mnezrmcgjoxgghkosfmz.supabase.co/storage/v1/object/public/users/${lessons[0].preview}`" controls class="w-full aspect-video"></video>
+        </div>
         <div class="flex max-lg:flex-col gap-6">
             <div class="flex flex-col gap-4 border border-gray-100 p-4 rounded-xl shadow-[0px_0px_13px_-7px_black] text-xl lg:w-1/2">
                 <div class="flex flex-col gap-2">

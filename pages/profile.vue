@@ -59,7 +59,9 @@
                 <p class="text-xl"><span class="font-Pacifico">Наименование</span> - {{ lesson.title }}</p>
                 <p class="text-lg"><span class="font-Pacifico">Описание</span> - {{ lesson.desc }}</p>
                 <p class="text-lg"><span class="font-Pacifico">Цена</span> - {{ lesson.price.toLocaleString() }}₽</p>
-                <video :src="`https://mnezrmcgjoxgghkosfmz.supabase.co/storage/v1/object/public/users/${lesson.video}`" controls class="rounded-xl w-full aspect-video border border-gray-200/80"></video>
+                <div class="flex items-center justify-center rounded-xl bg-black overflow-hidden w-full">
+                    <video :src="`https://mnezrmcgjoxgghkosfmz.supabase.co/storage/v1/object/public/users/${lesson.video}`" controls class="w-full aspect-video"></video>
+                </div>
             </div>
         </div>
     </div>  
@@ -77,6 +79,21 @@
             <FormKit type="file" @change="loadLesson" accept="video/*" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Видео" outer-class="w-full md:w-2/3 lg:w-1/2" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" label-class="font-Pacifico" label="Видео"/>
             <button type="submit" class="w-[160px] text-center py-0.5 px-4 rounded-full bg-[#673ab7]/70 border border-[#673ab7]/70 text-white transition-all duration-500 hover:text-[#673ab7]/70 hover:bg-transparent">Добавить</button>
         </FormKit>
+    </div>
+    <div class="flex flex-col gap-6" v-if="user.role == 'Ученик'">
+        <div class="flex items-center gap-4 text-3xl font-Pacifico">
+            <Icon class="text-3xl text-[#f48fb1]/70" name="material-symbols:contacts-rounded"/>
+            <p>Приобретённые уроки</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 text-xl">
+            <div class="flex flex-col gap-4 p-4 rounded-xl border border-[#673ab7]/70" v-for="lessonUser in lessonsUser">
+                <p class="text-2xl font-Pacifico">{{ lessonUser.lessons.title }}</p>
+                <div class="flex items-center justify-center rounded-xl bg-black overflow-hidden">
+                    <video :src="`https://mnezrmcgjoxgghkosfmz.supabase.co/storage/v1/object/public/users/${lessonUser.lessons.video}`" controls class="w-full aspect-video"></video>
+                </div>
+                <p>{{ lessonUser.lessons.price.toLocaleString() }}₽</p>
+            </div>
+        </div>
     </div>
     <div class="flex flex-col gap-6">
         <div class="flex items-center gap-4 text-3xl font-Pacifico">
@@ -284,6 +301,14 @@
             showMessage("Урок удалён!", true)   
         }          
     }
+
+
+    /* показ приобретенных уроков */
+    const { data:lessonsUser, error:lessonsUserError } = await supabase
+    .from('cart')
+    .select('*, lessons (*)')
+    .eq('status', 'Оформлен')
+    .eq('userId', id.value)
 
 
     /* выход из аккаунта */
