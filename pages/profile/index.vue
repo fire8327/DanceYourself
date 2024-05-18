@@ -99,7 +99,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 text-xl">
             <div class="flex flex-col gap-4 p-4 rounded-xl border border-[#673ab7]/70" v-for="privateLesson in privateLessonsArray">
                 <div class="flex items-center gap-4 self-end">
-                    <button @click="completePrivateLesson(privateLesson.id)" v-if="privateLesson.status == 'Новая' && role == 'Педагог'">
+                    <button @click="completePrivateLesson(privateLesson.id)" v-if="privateLesson.status == 'Новая' && user.role == 'Педагог'">
                         <Icon class="text-3xl text-green-500" name="material-symbols-light:check-circle"/>
                     </button>
                     <button @click="cancelPrivateLesson(privateLesson.id)" v-if="privateLesson.status == 'Новая'">
@@ -153,6 +153,10 @@
         user.value.desc = users[0].desc.replace(/<br>/g, '\n'),        
         user.value.nickname = users[0].nickname,
         user.value.styles = [""]
+        
+        if(users[0].styles && users[0].styles.length>0) {
+            user.value.styles = users[0].styles
+        }
     }
 
     const formAvatar = ref()
@@ -160,10 +164,6 @@
 
 
     /* управление характеристиками */
-    if(users[0].styles && users[0].styles.length>0) {
-        user.value.styles = users[0].styles
-    }
-
     const addCharacteristic = () => {
         user.value.styles.push("")
     }
