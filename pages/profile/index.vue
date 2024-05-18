@@ -108,10 +108,10 @@
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 text-xl">
             <div class="flex flex-col gap-4 p-4 rounded-xl border border-[#673ab7]/70" v-for="privateLesson in privateLessons">
                 <div class="flex items-center gap-4 self-end">
-                    <button @click="completePrivateLesson(privateLesson.id), privateLesson.status == 'Подтверждена'" v-if="privateLesson.status = 'Новая' && role.value == 'Педагог'">
+                    <button @click="completePrivateLesson(privateLesson.id), privateLesson.status == 'Подтверждена'" v-if="privateLesson.status == 'Новая' && role == 'Педагог'">
                         <Icon class="text-3xl text-green-500" name="material-symbols-light:check-circle"/>
                     </button>
-                    <button @click="cancelPrivateLesson(privateLesson.id), privateLesson.status == 'Отменена'" v-if="privateLesson.status = 'Новая'">
+                    <button @click="cancelPrivateLesson(privateLesson.id), privateLesson.status == 'Отменена'" v-if="privateLesson.status == 'Новая'">
                         <Icon class="text-3xl text-red-500" name="material-symbols:cancel"/>
                     </button>
                 </div>
