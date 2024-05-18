@@ -39,6 +39,13 @@
 </template>
 
 <script setup>
+    /* название страницы */
+    useSeoMeta({
+        title: 'Корзина',
+        lang: 'ru'
+    })
+
+
     /* проверка входа */
     const { id } = storeToRefs(useUserStore())
 

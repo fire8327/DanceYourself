@@ -63,6 +63,13 @@
 </template>
 
 <script setup>
+    /* название страницы */
+    useSeoMeta({
+        title: 'Главная',
+        lang: 'ru'
+    })
+
+
     /* проверка входа */
     const { authenticated } = storeToRefs(useUserStore())
 

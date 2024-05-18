@@ -16,6 +16,13 @@
 </template>
 
 <script setup>
+    /* название страницы */
+    useSeoMeta({
+        title: 'Авторизация',
+        lang: 'ru'
+    })
+
+
     /* создание пользователя */
     const user = ref({
         login: "",

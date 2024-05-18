@@ -123,6 +123,13 @@
 </template>
 
 <script setup>
+    /* название страницы */
+    useSeoMeta({
+        title: 'Профиль',
+        lang: 'ru'
+    })
+
+
     /* подключение БД и проверка пользователя */
     const supabase = useSupabaseClient() 
     const { authenticated, role, id } = storeToRefs(useUserStore())

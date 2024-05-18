@@ -57,6 +57,13 @@
     const route = useRoute()
 
 
+    /* название страницы */
+    useSeoMeta({
+        title: `Педагог №${route.params.id}`,
+        lang: 'ru'
+    })
+
+
     /* создание сообщений и роутера */
     const showMessage = useMessagesStore().showMessage
     const router = useRouter()

@@ -18,6 +18,13 @@
 </template>
 
 <script setup>
+    /* название страницы */
+    useSeoMeta({
+        title: 'Редактирование урока',
+        lang: 'ru'
+    })
+
+
     /* подключение БД и проверка урока */
     const supabase = useSupabaseClient() 
     const route = useRoute()

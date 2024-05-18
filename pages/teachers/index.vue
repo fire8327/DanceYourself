@@ -32,6 +32,13 @@
 </template>
 
 <script setup>
+    /* название страницы */
+    useSeoMeta({
+        title: 'Педагоги',
+        lang: 'ru'
+    })
+
+
     /* подключение БД */
     const supabase = useSupabaseClient() 
 
