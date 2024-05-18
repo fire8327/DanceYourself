@@ -53,9 +53,14 @@
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
             <div class="rounded-xl flex flex-col gap-4 p-4 border border-[#673ab7]/70" v-for="lesson in lessons">
-                <button @click="deleteLesson(lesson.id, lessons.indexOf(lesson))" class="self-end">
-                    <Icon class="text-2xl text-red-500" name="material-symbols:delete-rounded"/>
-                </button>
+                <div class="flex items-center gap-4 self-end">
+                    <NuxtLink :to="`/profile/edit-${lesson.id}`">
+                        <Icon class="text-2xl text-amber-500" name="material-symbols:edit-outline"/>
+                    </NuxtLink>
+                    <button @click="deleteLesson(lesson.id, lessons.indexOf(lesson))">
+                        <Icon class="text-2xl text-red-500" name="material-symbols:delete-rounded"/>
+                    </button>
+                </div>
                 <p class="text-xl"><span class="font-Pacifico">Наименование</span> - {{ lesson.title }}</p>
                 <p class="text-lg"><span class="font-Pacifico">Описание</span> - {{ lesson.desc }}</p>
                 <p class="text-lg"><span class="font-Pacifico">Цена</span> - {{ lesson.price.toLocaleString() }}₽</p>
