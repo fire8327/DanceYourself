@@ -100,7 +100,7 @@
             </div>
         </div>
     </div>
-    <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-6" v-if="privateLessons && privateLessons.length > 0">
         <div class="flex items-center gap-4 text-3xl font-Pacifico">
             <Icon class="text-3xl text-[#f48fb1]/70" name="streamline:class-lesson-solid"/>
             <p>Индивидуальные занятия</p>
@@ -115,8 +115,8 @@
                         <Icon class="text-3xl text-red-500" name="material-symbols:cancel"/>
                     </button>
                 </div>
-                <p v-if="user.role == 'Педагог'"><span class="font-Pacifico">Педагог</span> - {{ privateLesson.users.surname }} {{ privateLesson.users.name }}</p>
-                <p v-if="user.role == 'Ученик'"><span class="font-Pacifico">Ученик</span> - {{ privateLesson.users.surname }} {{ privateLesson.users.name }}</p>
+                <p v-if="user.role == 'Ученик'"><span class="font-Pacifico">Педагог</span> - {{ userOrTeacher[0].surname }} {{ userOrTeacher[0].name }}</p>
+                <p v-if="user.role == 'Педагог'"><span class="font-Pacifico">Ученик</span> - {{ userOrTeacher[0].surname }} {{ userOrTeacher[0].name }}</p>
                 <p><span class="font-Pacifico">Дата, время занятия</span> - {{ privateLesson.dateTime }}</p>
                 <p><span class="font-Pacifico">Статус заявки</span> - {{ privateLesson.status }}</p>
             </div>
@@ -341,22 +341,22 @@
     /* индивидуальные занятия */
     let query = supabase
     .from('privateLessons')
-
+    .select('*')    
+    
     if(role.value == "Ученик"){
-        query = query.select('*, users (*)')
-        query = query.eq('users.id', id.value)
-    }
-
-    if(role.value == "Педагог"){
-        query = query.select('*, users!privateLessons_teacherId_fkey(*)')
+        query = query.eq('userId', id.value)
+    } else if(role.value == "Педагог"){
         query = query.eq('teacherId', id.value)
     }
-    
-    const { data:privateLessons, error:privateLessonsError } = await query
 
-    if(privateLessonsError) {
-        console.log(privateLessonsError)
-    }
+    const { data:privateLessons, error:privateLessonsError } = await query    
+    
+    const relatedUserId = role.value == "Ученик" ? privateLessons[0].teacherId : privateLessons[0].userId
+
+    const { data: userOrTeacher, error: userOrTeacherError } = await supabase
+    .from('users')
+    .select('*')
+    .eq('id', relatedUserId)
 
 
     /* подтверждение и отмена заявок */
