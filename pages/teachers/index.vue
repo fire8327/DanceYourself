@@ -66,7 +66,7 @@
         teachers.value = data
         const filter = teachers.value.filter(el => {
             if ((filters.value.style != 'Все' && !el.styles.includes(filters.value.style)) ||
-                (filters.value.nickname && el.nickname != filters.value.nickname)) {
+                (filters.value.nickname && !el.nickname.toLowerCase().includes(filters.value.nickname.toLowerCase()))) {
                 return false
             }
             return true
