@@ -24,7 +24,7 @@
             <SwiperSlide class="!flex flex-col gap-4 rounded-xl border border-[#673ab7]/70 p-4" v-for="review in reviews">
                 <div class="flex items-center gap-2">
                     <img :src="`https://mnezrmcgjoxgghkosfmz.supabase.co/storage/v1/object/public/users/${review.users.avatar}`" alt="" class="w-14 h-14 rounded-full">
-                    <p class="text-2xl font-Pacifico">{{ review.users.surname }} {{ review.users.surname }}</p>
+                    <p class="text-2xl font-Pacifico">{{ review.users.surname }} {{ review.users.name }}</p>
                 </div>
                 <p class="opacity-80">{{ review.text }}</p>
             </SwiperSlide>

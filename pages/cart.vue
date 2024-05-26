@@ -32,6 +32,7 @@
                     <FormKit type="text" validation="required" messages-class="text-[#E9556D] font-Pacifico" name="Срок действия" outer-class="max-md:w-full md:w-1/4" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="YY/YY"/>
                     <FormKit type="text" validation="required|number" messages-class="text-[#E9556D] font-Pacifico" name="CVC" outer-class="max-md:w-full md:w-1/4" input-class="px-4 py-2 border border-[#673ab7]/70 rounded-xl focus:outline-none w-full" placeholder="CVC"/>
                 </div>
+                <p class="text-2xl w-full"><span class="font-Pacifico">Итого: </span>{{ total.toLocaleString() }} ₽</p>
                 <button type="submit" class="px-4 py-2 bg-[#673ab7] text-white rounded-full shrink-0 w-[160px]">Оформить</button>
             </FormKit>
         </div>
@@ -64,17 +65,23 @@
     const carts = ref(cart)
 
 
-    /* управление количеством */  
+    /* управление количеством и суммой */  
+    const calculateTotal = () => {
+        return carts.value.reduce((acc, { count, lessons: { price } }) => acc + count * price, 0)
+    }
+    const total = ref(calculateTotal())
+
     const updateCount = async (newCount, id) => {
         const { data, error } = await supabase
         .from('cart')
         .update({ count: newCount })
         .eq('id', id)
-        .select();
+        .select()
 
         if(error) {
             showMessage("Произошла ошибка!", false)             
         } else {
+            total.value = calculateTotal()
             showMessage("Количество обновлено!", true)  
         }
     }
